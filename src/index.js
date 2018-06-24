@@ -111,10 +111,12 @@ class Game extends React.Component {
         coordinates = '(' + xCoord + ', ' + yCoord + ')';
       }
 
+      const selected = this.state.stepNumber === move ? 'selected' : '';
+
       return (
         <li key={move}>
           {coordinates}
-          <button onClick={() => this.jumpTo(move)}>{desc}</button>
+          <button className={selected} onClick={() => this.jumpTo(move)}>{desc}</button>
         </li>
       );
     });
