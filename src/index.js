@@ -14,7 +14,7 @@ class Board extends React.Component {
   renderSquare(i) {
     return (
       <Square
-        value={this.props.squares[i]}
+        value={this.props.squares[i].value}
         onClick={() => this.props.onClick(i)}
       />
     );
@@ -47,11 +47,19 @@ class Game extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      history: [
-        {
-          squares: Array(9).fill(null)
-        }
-      ],
+      history: [{
+        squares: [
+          {x: 0, y: 0, value: null},
+          {x: 1, y: 0, value: null},
+          {x: 2, y: 0, value: null},
+          {x: 0, y: 1, value: null},
+          {x: 1, y: 1, value: null},
+          {x: 2, y: 1, value: null},
+          {x: 0, y: 2, value: null},
+          {x: 1, y: 2, value: null},
+          {x: 2, y: 2, value: null},
+        ],
+      }],
       stepNumber: 0,
       xIsNext: true,
     };
@@ -60,17 +68,18 @@ class Game extends React.Component {
   handleClick(i) {
     const history = this.state.history.slice(0, this.state.stepNumber + 1);
     const current = history[history.length - 1];
-    const squares = current.squares.slice();
-    if (calculateWinner(squares) || squares[i]) {
+    const squares = current.squares.map(square => {
+      return Object.assign({}, square);
+    });
+    if (calculateWinner(squares) || squares[i].value) {
       return;
     }
-    squares[i] = this.state.xIsNext ? 'X' : 'O';
+    squares[i].value = this.state.xIsNext ? 'X' : 'O';
     this.setState({
-      history: history.concat([
-        {
-          squares: squares
-        }
-      ]),
+      history: history.concat([{
+        squareNumber: i,
+        squares: squares,
+      }]),
       stepNumber: history.length,
       xIsNext: !this.state.xIsNext,
     });
@@ -79,7 +88,7 @@ class Game extends React.Component {
   jumpTo(step) {
     this.setState({
       stepNumber: step,
-      xIsNext: (step % 2) === 0
+      xIsNext: (step % 2) === 0,
     });
   }
 
@@ -92,8 +101,19 @@ class Game extends React.Component {
       const desc = move ?
         'Go to move #' + move :
         'Go to game start';
+
+      const square = step.squares[step.squareNumber];
+      let coordinates, xCoord, yCoord;
+
+      if (square) {
+        xCoord = step.squares[step.squareNumber].x;
+        yCoord = step.squares[step.squareNumber].y;
+        coordinates = '(' + xCoord + ', ' + yCoord + ')';
+      }
+
       return (
         <li key={move}>
+          {coordinates}
           <button onClick={() => this.jumpTo(move)}>{desc}</button>
         </li>
       );
@@ -140,8 +160,8 @@ function calculateWinner(squares) {
   ];
   for (let i = 0; i < lines.length; i++) {
     const [a, b, c] = lines[i];
-    if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-      return squares[a];
+    if (squares[a].value && squares[a].value === squares[b].value && squares[a].value === squares[c].value) {
+      return squares[a].value;
     }
   }
   return null;
