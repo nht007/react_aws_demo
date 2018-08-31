@@ -15,7 +15,6 @@ it('calculates an X winner', () => {
   expect(calculateWinner(squares)).toBe('X');
 });
 
-
 it('calculates an O winner', () => {
   let squares = [
     {x: 0, y: 0, value: 'X'},
