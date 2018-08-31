@@ -1,0 +1,60 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+<div>
+  <div
+    className="board-row"
+  >
+    <button
+      className="square"
+      onClick={[Function]}
+    >
+      X
+    </button>
+    <button
+      className="square"
+      onClick={[Function]}
+    />
+    <button
+      className="square"
+      onClick={[Function]}
+    />
+  </div>
+  <div
+    className="board-row"
+  >
+    <button
+      className="square"
+      onClick={[Function]}
+    >
+      X
+    </button>
+    <button
+      className="square"
+      onClick={[Function]}
+    >
+      O
+    </button>
+    <button
+      className="square"
+      onClick={[Function]}
+    />
+  </div>
+  <div
+    className="board-row"
+  >
+    <button
+      className="square"
+      onClick={[Function]}
+    />
+    <button
+      className="square"
+      onClick={[Function]}
+    />
+    <button
+      className="square"
+      onClick={[Function]}
+    />
+  </div>
+</div>
+`;
