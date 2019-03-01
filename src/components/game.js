@@ -1,44 +1,26 @@
 import React from 'react';
-import Board from './board';
-import calculateWinner from '../constants/calculateWinner';
-import { initialState } from '../constants/initialState';
+import { connect } from 'react-redux';
 
-export default class Game extends React.Component {
+import Board from './board';
+import * as types from '../constants/ActionTypes';
+import calculateWinner from '../constants/calculateWinner';
+
+class Game extends React.Component {
   constructor(props) {
     super(props);
-    this.state = initialState;
   }
 
-  handleClick(i) {
-    const history = this.state.history.slice(0, this.state.stepNumber + 1);
-    const current = history[history.length - 1];
-    const squares = current.squares.map(square => {
-      return Object.assign({}, square);
-    });
-    if (calculateWinner(squares) || squares[i].value) {
-      return;
-    }
-    squares[i].value = this.state.xIsNext ? 'X' : 'O';
-    this.setState({
-      history: history.concat([{
-        squareNumber: i,
-        squares: squares,
-      }]),
-      stepNumber: history.length,
-      xIsNext: !this.state.xIsNext,
-    });
+  handleClick(squareNumber) {
+    this.props.move(squareNumber);
   }
 
-  jumpTo(step) {
-    this.setState({
-      stepNumber: step,
-      xIsNext: (step % 2) === 0,
-    });
+  jumpTo(stepNumber) {
+    this.props.jump(stepNumber);
   }
 
   render() {
-    const history = this.state.history;
-    const current = history[this.state.stepNumber];
+    const history = this.props.history;
+    const current = history[this.props.stepNumber];
     const winner = calculateWinner(current.squares);
 
     const moves = history.map((step, move) => {
@@ -55,7 +37,7 @@ export default class Game extends React.Component {
         coordinates = '(' + xCoord + ', ' + yCoord + ')';
       }
 
-      const selected = this.state.stepNumber === move ? 'selected' : '';
+      const selected = this.props.stepNumber === move ? 'selected' : '';
 
       return (
         <li key={move}>
@@ -69,7 +51,7 @@ export default class Game extends React.Component {
     if (winner) {
       status = 'Winner: ' + winner;
     } else {
-      status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
+      status = 'Next player: ' + (this.props.xIsNext ? 'X' : 'O');
     }
 
     return (
@@ -88,3 +70,20 @@ export default class Game extends React.Component {
     );
   }
 }
+
+const mapStateToProps = state => {
+  return {
+    history: state.history,
+    xIsNext: state.xIsNext,
+    stepNumber: state.stepNumber
+  }
+};
+
+const mapDispatchToProps = dispatch => ({
+  move: (squareNumber) =>
+    dispatch({ type: types.MOVE, squareNumber: squareNumber }),
+  jump: (stepNumber) =>
+    dispatch({ type: types.JUMP, stepNumber: stepNumber })
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Game);

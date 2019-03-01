@@ -23,7 +23,7 @@ yarn deploy
 - [x] Jest (Test suite)
 - [x] Amazon S3 (Static hosting)
 - [x] AWS CLI deployment
-- [ ] Redux (State refactor)
+- [x] Redux (State refactor)
 - [ ] Amazon API Gateway (State persistence interface)
 - [ ] Amazon DynamoDB (State persistence)
 - [ ] AWS Lambda (State validation)

@@ -26,6 +26,12 @@ export default function game(state = initialState, action) {
         xIsNext: !state.xIsNext,
       };
 
+    case types.JUMP:
+      return {
+        history: state.history,
+        stepNumber: action.stepNumber,
+        xIsNext: (action.stepNumber % 2) === 0,
+      };
 
     default:
       return state;

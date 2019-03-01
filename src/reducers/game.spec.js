@@ -82,4 +82,33 @@ describe('game reducer', () => {
     expect(square.value).toEqual(null);
     expect(history.length).toEqual(1);
   });
+
+  it('should handle JUMP', () => {
+    const stepNumber = 1;
+    const state = {
+      history: [{
+        squares: [
+          {x: 0, y: 0, value: 'X'},
+          {x: 1, y: 0, value: 'X'},
+          {x: 2, y: 0, value: null},
+          {x: 0, y: 1, value: 'O'},
+          {x: 1, y: 1, value: null},
+          {x: 2, y: 1, value: null},
+          {x: 0, y: 2, value: null},
+          {x: 1, y: 2, value: null},
+          {x: 2, y: 2, value: null},
+        ],
+      }],
+      stepNumber: 3,
+      xIsNext: false,
+    };
+    const resultState = game(state, {
+      type: types.JUMP,
+      stepNumber: 1
+    });
+
+    expect(resultState.history).toEqual(state.history);
+    expect(resultState.stepNumber).toEqual(stepNumber);
+    expect(resultState.xIsNext).toBeFalsy();
+  });
 });
