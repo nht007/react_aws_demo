@@ -1,27 +1,12 @@
 import React from 'react';
 import Board from './board';
-import calculateWinner from './calculateWinner';
+import calculateWinner from '../constants/calculateWinner';
+import { initialState } from '../constants/initialState';
 
 export default class Game extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      history: [{
-        squares: [
-          {x: 0, y: 0, value: null},
-          {x: 1, y: 0, value: null},
-          {x: 2, y: 0, value: null},
-          {x: 0, y: 1, value: null},
-          {x: 1, y: 1, value: null},
-          {x: 2, y: 1, value: null},
-          {x: 0, y: 2, value: null},
-          {x: 1, y: 2, value: null},
-          {x: 2, y: 2, value: null},
-        ],
-      }],
-      stepNumber: 0,
-      xIsNext: true,
-    };
+    this.state = initialState;
   }
 
   handleClick(i) {
